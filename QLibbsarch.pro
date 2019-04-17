@@ -1,18 +1,24 @@
 # Created by and for Qt Creator This file was created for editing the project sources only.
 # You may attempt to use it for building too, by modifying this file here.
 
-#TARGET = QLibbsarch
+QT -= gui
+
+TEMPLATE = lib
+
+TARGET = QLibbsarch
 
 HEADERS = \
    $$PWD/dds.h \
-   $$PWD/libbsarch.h
+   $$PWD/libbsarch.h \
+   QLibbsarch.h
 
 SOURCES = \
-   $$PWD/.gitignore \
-   $$PWD/libbsarch.cpp
-
-INCLUDEPATH = \
-    $$PWD/.
+   QLibbsarch.cpp
 
 #DEFINES = 
 
+
+unix|win32: LIBS += -L$$PWD/./ -llibbsarch
+
+INCLUDEPATH += $$PWD/.
+DEPENDPATH += $$PWD/.
