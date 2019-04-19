@@ -18,6 +18,9 @@
 
 #pragma once
 
+#include <stdint.h>
+#include <dxgiformat.h>
+
 
 namespace DirectX
 {

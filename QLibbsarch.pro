@@ -1,6 +1,3 @@
-# Created by and for Qt Creator This file was created for editing the project sources only.
-# You may attempt to use it for building too, by modifying this file here.
-
 QT -= gui
 
 TEMPLATE = lib
@@ -8,17 +5,19 @@ TEMPLATE = lib
 TARGET = QLibbsarch
 
 HEADERS = \
-   $$PWD/dds.h \
-   $$PWD/libbsarch.h \
+   BSArchiveAuto.h \
+   dds.h \
+   libbsarch.h \
+   BSArchive.h \
+   BSArchiveEntries.h \
    QLibbsarch.h
 
 SOURCES = \
+   BSArchive.cpp \
+   BSArchiveAuto.cpp \
+   BSArchiveEntries.cpp \
    QLibbsarch.cpp
 
 #DEFINES = 
 
-
-unix|win32: LIBS += -L$$PWD/./ -llibbsarch
-
-INCLUDEPATH += $$PWD/.
-DEPENDPATH += $$PWD/.
+IBS += -L$$PWD/./ -llibbsarch

@@ -1,44 +1,17 @@
 #include "QLibbsarch.h"
-
-wchar_t *QStringToWchar(const QString& Qstring)
+const wchar_t *QStringToWchar(const QString& qs)
 {
-    wchar_t *array = new wchar_t (sizeof (Qstring));
-    Qstring.toWCharArray(array);
+    wchar_t *array = new wchar_t [static_cast<unsigned int>(qs.length() + 1)];
+    qs.toWCharArray(array);
+    array [qs.length()] = '\0';
     return array;
 }
 
-
-
-BSArchiveEntries::BSArchiveEntries() : entries (bsa_entry_list_create()) {}
-
-BSArchiveEntries::~BSArchiveEntries()
+const std::string wcharToString(const wchar_t *text)
 {
-    bsa_entry_list_free(entries);
+    QString qs = QString::fromWCharArray(text) ;
+    return qs.toStdString();
 }
 
 
-BSArchive::BSArchive(BSArchiveEntries entries) : archive (bsa_create()), entries (entries) {}
-
-BSArchive::~BSArchive()
-{
-    bsa_free(archive);
-    bsa_entry_list_free(archive);
-    delete entries;
-
-}
-
-bsa_result_message_t BSArchive::openArchive(const QString &archivePath)
-{
-    return bsa_load_from_file(archive, QStringToWchar(archivePath));
-}
-
-bsa_result_message_t BSArchive::save()
-{
-    return bsa_save(archive);
-}
-
-bsa_result_message_t BSArchive::addFileFromDisk(const QString &rootDir, const QString &filename)
-{
-    return bsa_add_file_from_disk(archive, QStringToWchar(rootDir), QStringToWchar(filename));
-}
 

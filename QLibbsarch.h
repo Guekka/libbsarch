@@ -2,38 +2,12 @@
 #define QLIBBSARCH_H
 
 #include "libbsarch.h"
-#include <QString>
+#include <QStringList>
+#include <string>
 
-static wchar_t *QStringToWchar(const QString& Qstring);
+const wchar_t *QStringToWchar(const QString& Qstring);
+const std::string wcharToString(const wchar_t *text);
 
-class BSArchiveEntries
-{
-public:
-    BSArchiveEntries();
-    ~BSArchiveEntries();
-
-private:
-    bsa_entry_list_t entries;
-};
-
-class BSArchive
-{
-public:
-    BSArchive(BSArchiveEntries entries);
-    ~BSArchive();
-
-    bsa_result_message_t openArchive(const QString& archivePath);
-    bsa_result_message_t create(const QString& archiveName, bsa_archive_type_e type);
-    bsa_result_message_t save();
-    bsa_result_message_t addFileFromDisk(const QString& rootDir, const QString& filename);
-    //bsa_archive_t archive, const wchar_t *root_dir, const wchar_t *filename
-
-
-private:
-    bsa_archive_t archive;
-    BSArchiveEntries entries;
-
-};
 
 #endif // QLIBBSARCH_H
 
