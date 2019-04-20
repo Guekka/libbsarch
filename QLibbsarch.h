@@ -1,8 +1,7 @@
 #ifndef QLIBBSARCH_H
 #define QLIBBSARCH_H
 
-#include "libbsarch.h"
-#include <QStringList>
+#include <QString>
 #include <string>
 
 const wchar_t *QStringToWchar(const QString& Qstring);

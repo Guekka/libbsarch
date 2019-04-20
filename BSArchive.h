@@ -20,7 +20,11 @@ public:
     void addFileFromDisk(const QString& rootDir, const QStringList& files);
     void addFileFromMemory(const QString& filename, const QByteArray& data);
     void setCompressed(bool value);
-
+    void setShareData(bool value);
+    bsa_file_record_t findFileRecord (const QString& filename);
+    bsa_result_message_buffer_t extractFileDataByRecord(bsa_file_record_t record);
+    bsa_result_message_buffer_t extractFileDataByFilename(const QString& filename);
+    void extract(const QString& filename, const QString& saveAs);
 
 
 private:
