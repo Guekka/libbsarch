@@ -1,28 +1,31 @@
 #include "BSArchiveAuto.h"
 #include "QLibbsarch.h"
 
-BSArchiveAuto::BSArchiveAuto(const QString& rootDirectory) : archive(BSArchive()), entries (BSArchiveEntries()), rootDirectory(rootDirectory) {}
+BSArchiveAuto::BSArchiveAuto(const QString& rootDirectory) : rootDirectory(QDir::toNativeSeparators(QDir::cleanPath(rootDirectory))) {}
 
 
-void BSArchiveAuto::create(const QString &archiveName, bsa_archive_type_e type)
+void BSArchiveAuto::create(const QString &archiveName, const bsa_archive_type_e &type)
 {
-    archive.create(archiveName, type, entries);
+    const wchar_t *path = QStringToWchar( QDir::toNativeSeparators(archiveName) );
+    bsa_create_archive(getArchive(), path, type, getEntries());
 
-    for (int i = 0 ; i < filesfromMemoryData.size() ; ++i)
+    QMapIterator<QString, QByteArray> mapIt(filesfromMemory);
+
+    while(mapIt.hasNext())
     {
-        archive.addFileFromMemory(filesFromMemoryFilename.at(i), filesfromMemoryData.at(i));
+        BSArchive::addFileFromMemory(mapIt.key(), mapIt.value());
     }
 
     for (auto file : filesFromDisk)
     {
-        archive.addFileFromDisk(rootDirectory.path(), file);
+        BSArchive::addFileFromDisk(rootDirectory.path(), file);
     }
 }
 
 
 void BSArchiveAuto::addFileFromDisk(const QString &filename)
 {
-    entries.add(rootDirectory.relativeFilePath(filename));
+    add(rootDirectory.relativeFilePath(filename));
     filesFromDisk << filename;
 }
 
@@ -37,16 +40,16 @@ void BSArchiveAuto::addFileFromDisk(const QStringList& files)
 
 void BSArchiveAuto::addFileFromMemory(const QString &filename, const QByteArray &data)
 {
-    entries.add(filename);
-    filesfromMemoryData << data;
-    filesFromMemoryFilename << filename;
+    add(filename);
+    filesfromMemory.insert(filename, data);
 }
 
 void BSArchiveAuto::extractAll(const QString& destinationDirectory)
 {
-    for (auto file : entries.list())
+    qDebug() << BSArchive::listFiles("");
+    for (auto file : BSArchive::listFiles(""))
     {
-        archive.extract(file, destinationDirectory + "/" + file);
+        BSArchive::extract(file, destinationDirectory + "/" + file);
     }
 }
 

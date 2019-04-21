@@ -20,4 +20,4 @@ SOURCES = \
 
 #DEFINES = 
 
-IBS += -L$$PWD/./ -llibbsarch
+LIBS += -L$$PWD/./ -llibbsarch

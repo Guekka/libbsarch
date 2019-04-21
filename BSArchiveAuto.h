@@ -3,12 +3,11 @@
 
 #include "BSArchive.h"
 #include "BSArchiveEntries.h"
-#include <QVector>
-
 /*!
- * \brief A convenience class for BSArchive and BSArchiveEntries
+ * \brief A convenience class for BSArchive and BSArchiveEntries. Its performance is worse than using these two classes separately, but it removes the need to manually handle
+ * the BSArchiveEntries.
  */
-class BSArchiveAuto : protected BSArchiveEntries, public BSArchive
+class BSArchiveAuto : public BSArchiveEntries, public BSArchive
 {
 public:
     /*!
@@ -21,7 +20,7 @@ public:
      * \param archiveName The BSA name
      * \param type The BSA type
      */
-    void create(const QString& archiveName, bsa_archive_type_e type);
+    void create(const QString& archiveName, const bsa_archive_type_e& type);
     /*!
      * \brief Adds a file from the disk to the BSA. Also adds it to the BSA entries.
      * \param rootDir The root directory of the file.
@@ -46,11 +45,8 @@ public:
      */
     void extractAll(const QString& destinationDirectory);
 private:
-    BSArchive archive;
-    BSArchiveEntries entries;
     QStringList filesFromDisk;
-    QVector<QByteArray> filesfromMemoryData;
-    QStringList filesFromMemoryFilename;
+    QMap<QString, QByteArray> filesfromMemory;
     QDir rootDirectory;
 
 };

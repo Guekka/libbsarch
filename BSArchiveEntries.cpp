@@ -1,9 +1,8 @@
 #include "BSArchiveEntries.h"
-#include "QLibbsarch.h"
 
-BSArchiveEntries::BSArchiveEntries() : entries (bsa_entry_list_create()) {}
+BSArchiveEntries::BSArchiveEntries() : m_entries (bsa_entry_list_create()) {}
 
-BSArchiveEntries::BSArchiveEntries(const QStringList& QSLEntries) : entries (bsa_entry_list_create())
+BSArchiveEntries::BSArchiveEntries(const QStringList& QSLEntries) : m_entries (bsa_entry_list_create())
 {
     for(auto entry : QSLEntries)
     {
@@ -11,32 +10,34 @@ BSArchiveEntries::BSArchiveEntries(const QStringList& QSLEntries) : entries (bsa
     }
 }
 
+BSArchiveEntries::BSArchiveEntries(const bsa_entry_list_t& entries) : m_entries(entries) {}
+
 BSArchiveEntries::~BSArchiveEntries()
 {
-    bsa_entry_list_free(entries);
+    bsa_entry_list_free(m_entries);
 }
 
 void BSArchiveEntries::add(const QString &filepath)
 {
     const wchar_t *path = QStringToWchar( QDir::toNativeSeparators(filepath) );
 
-    auto result = bsa_entry_list_add(entries, path);
+    auto result = bsa_entry_list_add(m_entries, path);
     if(result.code == BSA_RESULT_EXCEPTION)
         throw std::runtime_error(wcharToString(result.text));
 }
 
-uint32_t BSArchiveEntries::count() const
+uint32_t BSArchiveEntries::count()
 {
-    return bsa_entry_list_count(entries);
+    return bsa_entry_list_count(m_entries);
 }
 
-QStringList BSArchiveEntries::list() const
+QStringList BSArchiveEntries::list() //FIXME
 {
     QStringList list;
     for(uint32_t i = 0 ; i < count() ; ++i)
     {
         wchar_t *buffer;
-        bsa_entry_list_get(entries, i, 1024, buffer);
+        bsa_entry_list_get(m_entries, i, 1024, buffer);
         list << QString::fromWCharArray(buffer);
     }
     return list;
@@ -44,6 +45,6 @@ QStringList BSArchiveEntries::list() const
 
 bsa_entry_list_t BSArchiveEntries::getEntries() const
 {
-    return entries;
+    return m_entries;
 }
 
