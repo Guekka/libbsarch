@@ -23,8 +23,9 @@ public:
     bsa_result_message_buffer_t extractFileDataByRecord(bsa_file_record_t record);
     bsa_result_message_buffer_t extractFileDataByFilename(const QString& filename);
     void extract(const QString& filename, const QString& saveAs);
-    QStringList listFiles(const QString& folder);
-
+    QStringList listFiles();
+    void free();
+    void reset();
 
     bsa_archive_t getArchive() const;
 

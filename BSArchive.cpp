@@ -4,7 +4,15 @@ BSArchive::BSArchive() : m_archive (bsa_create()) {}
 
 BSArchive::~BSArchive()
 {
-    bsa_free(m_archive);
+    free();
+}
+
+void BSArchive::free()
+{
+    auto result = bsa_free(m_archive);
+
+    if(result.code == BSA_RESULT_EXCEPTION)
+        throw std::runtime_error(wcharToString(result.text));
 }
 
 void BSArchive::open(const QString &archivePath) //Untested
@@ -36,7 +44,7 @@ void BSArchive::save()
         throw std::runtime_error(wcharToString(result.text));
 }
 
-void BSArchive::addFileFromDisk(const QString &rootDir, const QString &filename)
+void BSArchive::addFileFromDisk(const QString &rootDir, const QString &filename) //FIXME works but files directly in root dir throw an error
 {
     const wchar_t *rootPath = QStringToWchar( QDir::toNativeSeparators( rootDir));
     const wchar_t *path = QStringToWchar( QDir::toNativeSeparators(filename) );
@@ -94,7 +102,7 @@ bsa_result_message_buffer_t BSArchive::extractFileDataByFilename(const QString &
 }
 
 void BSArchive::extract(const QString &filename, const QString &saveAs) //FIXME
-{
+{    
     const wchar_t *path = QStringToWchar( QDir::toNativeSeparators(filename) );
     const wchar_t *extractedPath = QStringToWchar( QDir::toNativeSeparators(saveAs) );
 
@@ -104,11 +112,10 @@ void BSArchive::extract(const QString &filename, const QString &saveAs) //FIXME
         throw std::runtime_error(wcharToString(result.text));
 }
 
-QStringList BSArchive::listFiles(const QString &folder)
+QStringList BSArchive::listFiles()
 {
     bsa_entry_list_t list = bsa_entry_list_create();
-    const wchar_t *folderPath = QStringToWchar( QDir::toNativeSeparators(folder) );
-    auto result = bsa_get_resource_list(m_archive, list, folderPath);
+    auto result = bsa_get_resource_list(m_archive, list, L"");
 
     if(result.code == BSA_RESULT_EXCEPTION)
         throw std::runtime_error(wcharToString(result.text));
@@ -119,4 +126,10 @@ QStringList BSArchive::listFiles(const QString &folder)
 bsa_archive_t BSArchive::getArchive() const
 {
     return m_archive;
+}
+
+void BSArchive::reset()
+{
+    free();
+    m_archive = bsa_create();
 }

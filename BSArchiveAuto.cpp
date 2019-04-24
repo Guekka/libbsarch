@@ -44,12 +44,28 @@ void BSArchiveAuto::addFileFromMemory(const QString &filename, const QByteArray 
     filesfromMemory.insert(filename, data);
 }
 
-void BSArchiveAuto::extractAll(const QString& destinationDirectory)
+void BSArchiveAuto::extractAll(const QString& destinationDirectory, const bool &overwriteExistingFiles)
 {
-    qDebug() << BSArchive::listFiles("");
-    for (auto file : BSArchive::listFiles(""))
+    //TODO check if overwriteExistingFiles works correctly
+
+    for (auto file : BSArchive::listFiles())
     {
-        BSArchive::extract(file, destinationDirectory + "/" + file);
+        QFile currentFile(destinationDirectory + "/" + file);
+        rootDirectory.mkpath(destinationDirectory + "/" + QFileInfo(file).path());
+        if(currentFile.exists() && overwriteExistingFiles)
+        {
+            currentFile.remove();
+            BSArchive::extract(file, currentFile.fileName());
+        }
+        else if (!currentFile.exists())
+            BSArchive::extract(file, currentFile.fileName());
+
     }
 }
 
+void BSArchiveAuto::reset()
+{
+    BSArchive::reset();
+    BSArchiveEntries::reset();
+
+}

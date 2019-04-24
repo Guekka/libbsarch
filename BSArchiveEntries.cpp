@@ -14,7 +14,18 @@ BSArchiveEntries::BSArchiveEntries(const bsa_entry_list_t& entries) : m_entries(
 
 BSArchiveEntries::~BSArchiveEntries()
 {
+    free();
+}
+
+void BSArchiveEntries::free()
+{
     bsa_entry_list_free(m_entries);
+}
+
+void BSArchiveEntries::reset()
+{
+    free();
+    m_entries = bsa_entry_list_create();
 }
 
 void BSArchiveEntries::add(const QString &filepath)
@@ -36,7 +47,7 @@ QStringList BSArchiveEntries::list() //FIXME
     QStringList list;
     for(uint32_t i = 0 ; i < count() ; ++i)
     {
-        wchar_t *buffer;
+        wchar_t buffer[1024];
         bsa_entry_list_get(m_entries, i, 1024, buffer);
         list << QString::fromWCharArray(buffer);
     }

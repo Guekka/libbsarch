@@ -12,6 +12,8 @@ public:
     ~BSArchiveEntries();
 
     void add(const QString& filepath);
+    void free();
+    void reset();
     uint32_t count() ;
     QStringList list();
 

@@ -42,8 +42,11 @@ public:
     /*!
      * \brief Extracts all files from the BSA to the destination.
      * \param destinationDirectory The directory where all files will be extracted.
+     * \param overwriteExistingFiles Whether files in archive will overwrite existing loose files or not
      */
-    void extractAll(const QString& destinationDirectory);
+    void extractAll(const QString& destinationDirectory, const bool& overwriteExistingFiles);
+
+    void reset();
 private:
     QStringList filesFromDisk;
     QMap<QString, QByteArray> filesfromMemory;
