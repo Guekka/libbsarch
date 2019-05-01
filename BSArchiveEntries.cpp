@@ -42,7 +42,7 @@ uint32_t BSArchiveEntries::count()
     return bsa_entry_list_count(m_entries);
 }
 
-QStringList BSArchiveEntries::list() //FIXME
+QStringList BSArchiveEntries::list()
 {
     QStringList list;
     for(uint32_t i = 0 ; i < count() ; ++i)

@@ -3,6 +3,7 @@
 
 #include "QLibbsarch.h"
 #include "BSArchiveEntries.h"
+#include <QDataStream>
 
 class BSArchive
 {
@@ -20,8 +21,8 @@ public:
     void setCompressed(bool value);
     void setShareData(bool value);
     bsa_file_record_t findFileRecord (const QString& filename);
-    bsa_result_message_buffer_t extractFileDataByRecord(bsa_file_record_t record);
-    bsa_result_message_buffer_t extractFileDataByFilename(const QString& filename);
+    QByteArray extractFileDataByRecord(bsa_file_record_t record);
+    QByteArray extractFileDataByFilename(const QString& filename);
     void extract(const QString& filename, const QString& saveAs);
     QStringList listFiles();
     void free();

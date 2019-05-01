@@ -90,15 +90,31 @@ bsa_file_record_t BSArchive::findFileRecord(const QString &filename)
     return bsa_find_file_record(m_archive, path);
 }
 
-bsa_result_message_buffer_t BSArchive::extractFileDataByRecord(bsa_file_record_t record)
+QByteArray BSArchive::extractFileDataByRecord(bsa_file_record_t record)
 {
-    return bsa_extract_file_data_by_record(m_archive, record);
+    auto result = bsa_extract_file_data_by_record(m_archive, record);
+
+    if(result.message.code == BSA_RESULT_EXCEPTION)
+        throw std::runtime_error(wcharToString(result.message.text));
+
+    char* buffer = static_cast<char*>(result.buffer.data);
+
+    QByteArray byte_array(buffer, static_cast<int>(result.buffer.size));
+    return byte_array;
 }
 
-bsa_result_message_buffer_t BSArchive::extractFileDataByFilename(const QString &filename)
+QByteArray BSArchive::extractFileDataByFilename(const QString &filename)
 {
     const wchar_t *path = QStringToWchar( QDir::toNativeSeparators(filename) );
-    return bsa_extract_file_data_by_filename(m_archive, path);
+    auto result = bsa_extract_file_data_by_filename(m_archive, path);
+
+    if(result.message.code == BSA_RESULT_EXCEPTION)
+        throw std::runtime_error(wcharToString(result.message.text));
+
+    char* buffer = static_cast<char*>(result.buffer.data);
+
+    QByteArray byte_array(buffer, static_cast<int>(result.buffer.size));
+    return byte_array;
 }
 
 void BSArchive::extract(const QString &filename, const QString &saveAs) //FIXME
