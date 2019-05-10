@@ -1,6 +1,8 @@
 # BSArchive DLL and C++ bindings
 BSArchive Dynamic Link Library and C++ bindings
 
+This fork adds a Qt wrapper. To use it, just include BSArchiveAuto.h 
+
 ## How to build
 
 1) Create a `XEditPath` environment variable and set it to the directory containing the XEdit code

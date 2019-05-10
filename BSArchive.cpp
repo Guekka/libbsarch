@@ -15,7 +15,7 @@ void BSArchive::free()
         throw std::runtime_error(wcharToString(result.text));
 }
 
-void BSArchive::open(const QString &archivePath) //Untested
+void BSArchive::open(const QString &archivePath)
 {
     const wchar_t *path = QStringToWchar( QDir::toNativeSeparators(archivePath) );
     auto result = bsa_load_from_file(m_archive, path);
@@ -44,26 +44,34 @@ void BSArchive::save()
         throw std::runtime_error(wcharToString(result.text));
 }
 
-void BSArchive::addFileFromDisk(const QString &rootDir, const QString &filename) //FIXME works but files directly in root dir throw an error
+void BSArchive::addFileFromDiskRoot(const QString &rootDir, const QString &filename)
 {
     const wchar_t *rootPath = QStringToWchar( QDir::toNativeSeparators( rootDir));
     const wchar_t *path = QStringToWchar( QDir::toNativeSeparators(filename) );
-    auto result = bsa_add_file_from_disk(m_archive, rootPath, path);
+    auto result = bsa_add_file_from_disk_root(m_archive, rootPath, path);
 
     if(result.code == BSA_RESULT_EXCEPTION)
         throw std::runtime_error(wcharToString(result.text));
 }
 
 
-void BSArchive::addFileFromDisk(const QString &rootDir, const QStringList& files)
+void BSArchive::addFileFromDiskRoot(const QString &rootDir, const QStringList& files)
 {
     for (auto file : files)
-    {
-        addFileFromDisk(rootDir, file);
-    }
+        addFileFromDiskRoot(rootDir, file);
 }
 
-void BSArchive::addFileFromMemory(const QString &filename, const QByteArray &data) //Untested
+void BSArchive::addFileFromDisk(const QString &pathInArchive, const QString &filePath)
+{
+    const wchar_t *archivePath = QStringToWchar( QDir::toNativeSeparators(pathInArchive));
+    const wchar_t *path = QStringToWchar( QDir::toNativeSeparators(filePath) );
+    auto result = bsa_add_file_from_disk_root(m_archive, archivePath, path);
+
+    if(result.code == BSA_RESULT_EXCEPTION)
+        throw std::runtime_error(wcharToString(result.text));
+}
+
+void BSArchive::addFileFromMemory(const QString &filename, const QByteArray &data) //UNTESTED
 {
     uint32_t size = static_cast<uint32_t>(data.size());
     bsa_buffer_t buffer = const_cast<char*>(data.data());
@@ -117,7 +125,7 @@ QByteArray BSArchive::extractFileDataByFilename(const QString &filename)
     return byte_array;
 }
 
-void BSArchive::extract(const QString &filename, const QString &saveAs) //FIXME
+void BSArchive::extract(const QString &filename, const QString &saveAs)
 {    
     const wchar_t *path = QStringToWchar( QDir::toNativeSeparators(filename) );
     const wchar_t *extractedPath = QStringToWchar( QDir::toNativeSeparators(saveAs) );

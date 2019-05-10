@@ -1,8 +1,10 @@
 #pragma once
 
 #include <stdint.h>
+
 #include <dxgiformat.h>
-#include "dds.h"
+
+#include "DDS.h"
 
 #ifdef BSARCH_DLL_EXPORT
 #define BSARCH_DLL_API(ReturnType) extern "C" __declspec(dllexport) ReturnType __stdcall

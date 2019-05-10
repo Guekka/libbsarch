@@ -15,8 +15,9 @@ public:
     void close();
     virtual void create(const QString& archiveName, const bsa_archive_type_e &type, const BSArchiveEntries &entries);
     void save();
-    void addFileFromDisk(const QString& rootDir, const QString& filename);
-    void addFileFromDisk(const QString& rootDir, const QStringList& files);
+    virtual void addFileFromDiskRoot(const QString& rootDir, const QString& filename);
+    virtual void addFileFromDiskRoot(const QString& rootDir, const QStringList& files);
+    void addFileFromDisk(const QString& pathInArchive, const QString& filePath);
     void addFileFromMemory(const QString& filename, const QByteArray& data);
     void setCompressed(bool value);
     void setShareData(bool value);

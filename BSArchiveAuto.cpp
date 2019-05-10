@@ -9,32 +9,53 @@ void BSArchiveAuto::create(const QString &archiveName, const bsa_archive_type_e 
     const wchar_t *path = QStringToWchar( QDir::toNativeSeparators(archiveName) );
     bsa_create_archive(getArchive(), path, type, getEntries());
 
-    QMapIterator<QString, QByteArray> mapIt(filesfromMemory);
+    QMapIterator<QString, QByteArray> mapItMemory(filesfromMemory);
+    QMapIterator<QString, QString> mapItDisk(filesFromDisk);
+
+    while(mapItMemory.hasNext())
+    {
+        mapItMemory.next();
+        BSArchive::addFileFromMemory(mapItMemory.key(), mapItMemory.value());
+    }
+
+    for (auto file : filesFromDiskRoot)
+        BSArchive::addFileFromDiskRoot(rootDirectory.path(), file);
+
+    while(mapItDisk.hasNext())
+    {
+        mapItDisk.next();
+        BSArchive::addFileFromDisk(mapItDisk.key(), mapItDisk.value());
+    }
+}
+
+
+void BSArchiveAuto::addFileFromDiskRoot(const QString &filename)
+{
+    add(rootDirectory.relativeFilePath(filename));
+    filesFromDiskRoot << filename;
+}
+
+
+void BSArchiveAuto::addFileFromDiskRoot(const QStringList& files)
+{
+    for (auto file : files)
+        addFileFromDiskRoot(file);
+}
+
+void BSArchiveAuto::addFileFromDisk(const QString &saveAs, const QString &diskPath)
+{
+    BSArchiveEntries::add(saveAs);
+    filesFromDisk.insert(saveAs, diskPath);
+}
+
+void BSArchiveAuto::addFileFromDisk(const QMap<QString, QString> &map)
+{
+    QMapIterator<QString, QString> mapIt(map);
 
     while(mapIt.hasNext())
     {
-        BSArchive::addFileFromMemory(mapIt.key(), mapIt.value());
-    }
-
-    for (auto file : filesFromDisk)
-    {
-        BSArchive::addFileFromDisk(rootDirectory.path(), file);
-    }
-}
-
-
-void BSArchiveAuto::addFileFromDisk(const QString &filename)
-{
-    add(rootDirectory.relativeFilePath(filename));
-    filesFromDisk << filename;
-}
-
-
-void BSArchiveAuto::addFileFromDisk(const QStringList& files)
-{
-    for (auto file : files)
-    {
-        addFileFromDisk(file);
+        mapIt.next();
+        filesFromDisk.insert(mapIt.key(), mapIt.value());
     }
 }
 
