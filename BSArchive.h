@@ -1,5 +1,4 @@
-#ifndef BSARCHIVE_H
-#define BSARCHIVE_H
+#pragma once
 
 #include "QLibbsarch.h"
 #include "BSArchiveEntries.h"
@@ -33,7 +32,6 @@ public:
 
 private:
     bsa_archive_t m_archive;
+    QMutex mutex;
 
 };
-
-#endif // BSARCHIVE_H
