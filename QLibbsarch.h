@@ -1,19 +1,13 @@
-#ifndef QLIBBSARCH_H
-#define QLIBBSARCH_H
+#pragma once
 
-#include <QStringList>
-#include <QDir>
-#include <string>
-#include <QDebug>
-#include <QMapIterator>
 #include "libbsarch.h"
+#include <string>
+#include <QDir>
+#include <QStringList>
 
-#include "pch.h"
+#define PREPARE_PATH_LIBBSARCH(qstring) reinterpret_cast<const wchar_t *>(QDir::toNativeSeparators(qstring).utf16())
 
-const wchar_t *QStringToWchar(const QString& Qstring);
-const std::string wcharToString(const wchar_t *text);
-
-
-#endif // QLIBBSARCH_H
-
-
+inline const std::string wcharToString(const wchar_t *text)
+{
+    return QString::fromWCharArray(text).toStdString();
+}
