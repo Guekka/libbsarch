@@ -9,6 +9,7 @@ BSArchiveAuto::BSArchiveAuto(const QString &rootDirectory)
 void BSArchiveAuto::open(const QString &archivePath)
 {
     _archive.open(archivePath);
+    qDebug() << "Opening archive: " << archivePath;
 }
 
 void BSArchiveAuto::create(const QString &archiveName, const bsa_archive_type_e &type)
@@ -92,4 +93,9 @@ void BSArchiveAuto::setShareData(const bool state)
 void BSArchiveAuto::setCompressed(const bool state)
 {
     _archive.setCompressed(state);
+}
+
+void BSArchiveAuto::setDDSCallback(bsa_file_dds_info_proc_t fileDDSInfoProc)
+{
+    _archive.setDDSCallback(fileDDSInfoProc);
 }

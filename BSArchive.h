@@ -28,8 +28,11 @@ public:
     void free();
     void reset();
 
+    void setDDSCallback(bsa_file_dds_info_proc_t fileDDSInfoProc);
+
     bsa_archive_t getArchive() const;
 
 private:
+    bool _openedArchive = false;
     bsa_archive_t _archive;
 };
