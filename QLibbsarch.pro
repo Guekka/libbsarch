@@ -16,7 +16,6 @@ SOURCES = \
    BSArchive.cpp \
    BSArchiveAuto.cpp \
    BSArchiveEntries.cpp \
-   QLibbsarch.cpp
 
 #DEFINES = 
 

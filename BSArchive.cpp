@@ -19,8 +19,7 @@ void BSArchive::free()
     const auto &result = bsa_free(_archive);
     _openedArchive = false;
 
-    if(result.code == BSA_RESULT_EXCEPTION)
-        throw std::runtime_error(wcharToString(result.text));
+    QLibBsarch::checkResult(result);
 }
 
 void BSArchive::open(const QString &archivePath)
@@ -30,8 +29,7 @@ void BSArchive::open(const QString &archivePath)
     const auto &result = bsa_load_from_file(_archive, PREPARE_PATH_LIBBSARCH(archivePath));
     _openedArchive = true;
 
-    if (result.code == BSA_RESULT_EXCEPTION)
-        throw std::runtime_error(wcharToString(result.text));
+    QLibBsarch::checkResult(result);
 }
 
 void BSArchive::close()
@@ -49,6 +47,8 @@ void BSArchive::create(const QString &archiveName, const bsa_archive_type_e& typ
                   << "entries: " << entries.getEntries();
 
     bsa_create_archive(_archive, PREPARE_PATH_LIBBSARCH(archiveName), type, entries.getEntries());
+
+    _openedArchive = true;
 }
 
 void BSArchive::save()
@@ -57,8 +57,7 @@ void BSArchive::save()
 
     const auto &result = bsa_save(_archive);
 
-    if(result.code == BSA_RESULT_EXCEPTION)
-        throw std::runtime_error(wcharToString(result.text));
+    QLibBsarch::checkResult(result);
 }
 
 void BSArchive::addFileFromDiskRoot(const QString &rootDir, const QString &filename)
@@ -71,12 +70,10 @@ void BSArchive::addFileFromDiskRoot(const QString &rootDir, const QString &filen
                                                      PREPARE_PATH_LIBBSARCH(rootDir),
                                                      PREPARE_PATH_LIBBSARCH(filename));
 
-    if (result.code == BSA_RESULT_EXCEPTION)
-        throw std::runtime_error(wcharToString(result.text));
+    QLibBsarch::checkResult(result);
 }
 
-
-void BSArchive::addFileFromDiskRoot(const QString &rootDir, const QStringList& files)
+void BSArchive::addFileFromDiskRoot(const QString &rootDir, const QStringList &files)
 {
     for (const auto &file : files)
         addFileFromDiskRoot(rootDir, file);
@@ -92,8 +89,7 @@ void BSArchive::addFileFromDisk(const QString &pathInArchive, const QString &fil
                                                      PREPARE_PATH_LIBBSARCH(pathInArchive),
                                                      PREPARE_PATH_LIBBSARCH(filePath));
 
-    if (result.code == BSA_RESULT_EXCEPTION)
-        throw std::runtime_error(wcharToString(result.text));
+    QLibBsarch::checkResult(result);
 }
 
 void BSArchive::addFileFromMemory(const QString &filename, const QByteArray &data) //NOTE UNTESTED
@@ -104,8 +100,7 @@ void BSArchive::addFileFromMemory(const QString &filename, const QByteArray &dat
     bsa_buffer_t buffer = const_cast<char *>(data.data());
     const auto &result = bsa_add_file_from_memory(_archive, PREPARE_PATH_LIBBSARCH(filename), size, buffer);
 
-    if (result.code == BSA_RESULT_EXCEPTION)
-        throw std::runtime_error(wcharToString(result.text));
+    QLibBsarch::checkResult(result);
 }
 void BSArchive::setCompressed(bool value)
 {
@@ -130,10 +125,9 @@ QByteArray BSArchive::extractFileDataByRecord(bsa_file_record_t record)
 {
     const auto &result = bsa_extract_file_data_by_record(_archive, record);
 
-    if(result.message.code == BSA_RESULT_EXCEPTION)
-        throw std::runtime_error(wcharToString(result.message.text));
+    QLibBsarch::checkResult(result);
 
-    char* buffer = static_cast<char*>(result.buffer.data);
+    char *buffer = static_cast<char *>(result.buffer.data);
     int size = static_cast<int>(result.buffer.size);
 
     QByteArray byte_array(buffer, size);
@@ -144,8 +138,7 @@ QByteArray BSArchive::extractFileDataByFilename(const QString &filename)
 {
     const auto &result = bsa_extract_file_data_by_filename(_archive, PREPARE_PATH_LIBBSARCH(filename));
 
-    if(result.message.code == BSA_RESULT_EXCEPTION)
-        throw std::runtime_error(wcharToString(result.message.text));
+    QLibBsarch::checkResult(result);
 
     char *buffer = static_cast<char *>(result.buffer.data);
     int size = static_cast<int>(result.buffer.size);
@@ -159,8 +152,7 @@ void BSArchive::extract(const QString &filename, const QString &saveAs)
     qDebug() << "Extracting: " << filename << " saved as " << saveAs;
     const auto &result = bsa_extract_file(_archive, PREPARE_PATH_LIBBSARCH(filename), PREPARE_PATH_LIBBSARCH(saveAs));
 
-    if (result.code == BSA_RESULT_EXCEPTION)
-        throw std::runtime_error(wcharToString(result.text));
+    QLibBsarch::checkResult(result);
 }
 
 QStringList BSArchive::listFiles()
@@ -168,8 +160,7 @@ QStringList BSArchive::listFiles()
     bsa_entry_list_t list = bsa_entry_list_create();
     const auto &result = bsa_get_resource_list(_archive, list, L"");
 
-    if(result.code == BSA_RESULT_EXCEPTION)
-        throw std::runtime_error(wcharToString(result.text));
+    QLibBsarch::checkResult(result);
 
     return BSArchiveEntries(list).list();
 }
@@ -187,5 +178,6 @@ void BSArchive::reset()
 
 void BSArchive::setDDSCallback(bsa_file_dds_info_proc_t file_dds_info_proc)
 {
+    LOG_LIBBSARCH << "Setting DDS callback for archive: " << _archive << "\nCallback adress: " << &file_dds_info_proc;
     bsa_file_dds_info_callback_set(_archive, file_dds_info_proc);
 }
