@@ -2,6 +2,8 @@ QT -= gui
 
 TEMPLATE = lib
 
+CONFIG += c++17
+
 TARGET = QLibbsarch
 
 HEADERS = \

@@ -176,8 +176,8 @@ void BSArchive::reset()
     _archive = bsa_create();
 }
 
-void BSArchive::setDDSCallback(bsa_file_dds_info_proc_t file_dds_info_proc)
+void BSArchive::setDDSCallback(bsa_file_dds_info_proc_t file_dds_info_proc, void *context)
 {
     LOG_LIBBSARCH << "Setting DDS callback for archive: " << _archive << "\nCallback adress: " << &file_dds_info_proc;
-    bsa_file_dds_info_callback_set(_archive, file_dds_info_proc);
+    bsa_file_dds_info_callback_set(_archive, file_dds_info_proc, context);
 }
