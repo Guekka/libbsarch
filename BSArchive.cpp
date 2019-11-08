@@ -1,5 +1,6 @@
 #include "BSArchive.h"
 
+namespace QLibBsarch {
 BSArchive::BSArchive()
     : _archive(bsa_create())
 {
@@ -40,7 +41,7 @@ void BSArchive::close()
     _openedArchive = false;
 }
 
-void BSArchive::create(const QString &archiveName, const bsa_archive_type_e& type, const BSArchiveEntries& entries)
+void BSArchive::create(const QString &archiveName, const bsa_archive_type_e &type, const BSArchiveEntries &entries)
 {
     LOG_LIBBSARCH << "Creating archive. Archive name: " << archiveName << endl
                   << "type: " << type << endl
@@ -181,3 +182,4 @@ void BSArchive::setDDSCallback(bsa_file_dds_info_proc_t file_dds_info_proc, void
     LOG_LIBBSARCH << "Setting DDS callback for archive: " << _archive << "\nCallback adress: " << &file_dds_info_proc;
     bsa_file_dds_info_callback_set(_archive, file_dds_info_proc, context);
 }
+} // namespace QLibBsarch
