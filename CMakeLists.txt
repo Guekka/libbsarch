@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(QLibBsarch LANGUAGES CXX)
+project(Qlibbsarch LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 find_package(Qt5 COMPONENTS Core REQUIRED)
 
-add_library(QLibBsarch STATIC
+add_library(Qlibbsarch STATIC
     BSArchive.cpp
     BSArchive.h
     BSArchiveAuto.cpp
@@ -14,10 +14,29 @@ add_library(QLibBsarch STATIC
     BSArchiveEntries.h
     dds.h
     libbsarch.h
-    QLibBsarch.hpp
+    Qlibbsarch.hpp
 )
 
-target_link_libraries(QLibBsarch PRIVATE Qt5::Core)
+add_library(
+    libbsarch
+    STATIC
+    IMPORTED GLOBAL
+    )
 
-target_compile_definitions(QLibBsarch PRIVATE QLIBBSARCH_LIBRARY)
-target_compile_features(QLibBsarch PUBLIC cxx_std_17)
+set_target_properties(
+    libbsarch
+    PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_CURRENT_SOURCE_DIR}/libbsarch.lib
+    )
+
+set_target_properties(
+    libbsarch
+    PROPERTIES IMPORTED_LOCATION_DEBUG
+    ${CMAKE_CURRENT_SOURCE_DIR}/libbsarchd.lib
+    )
+
+message(${PROJECT_BINARY_DIR})
+
+target_link_libraries(Qlibbsarch PUBLIC Qt5::Core libbsarch)
+
+target_compile_features(Qlibbsarch PUBLIC cxx_std_17)
