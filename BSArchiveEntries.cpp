@@ -1,6 +1,6 @@
 #include "BSArchiveEntries.h"
 
-namespace QLibBsarch {
+namespace Qlibbsarch {
 BSArchiveEntries::BSArchiveEntries()
     : _entries(bsa_entry_list_create())
 {
@@ -40,7 +40,7 @@ void BSArchiveEntries::add(const QString &filepath)
 
     const auto &result = bsa_entry_list_add(_entries, PREPARE_PATH_LIBBSARCH(filepath));
 
-    QLibBsarch::checkResult(result);
+    Qlibbsarch::checkResult(result);
 }
 
 uint32_t BSArchiveEntries::count()
@@ -64,4 +64,4 @@ bsa_entry_list_t BSArchiveEntries::getEntries() const
 {
     return _entries;
 }
-} // namespace QLibBsarch
+} // namespace Qlibbsarch

@@ -2,7 +2,7 @@
 
 #include "QLibbsarch.hpp"
 
-namespace Qlibbsarch {
+namespace QLibBsarch {
 class BSArchiveEntries
 {
 public:
@@ -22,4 +22,4 @@ public:
 private:
     bsa_entry_list_t _entries;
 };
-} // namespace Qlibbsarch
+} // namespace QLibBsarch

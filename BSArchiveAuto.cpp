@@ -1,16 +1,21 @@
 #include "BSArchiveAuto.h"
 #include "QLibbsarch.hpp"
 
-namespace QLibBsarch {
+namespace Qlibbsarch {
 BSArchiveAuto::BSArchiveAuto(const QString &rootDirectory)
-    : _rootDirectory(QDir::toNativeSeparators(QDir::cleanPath(rootDirectory)))
+    : _rootDirectory(rootDirectory)
 {
+}
+
+void BSArchiveAuto::setRootDirectory(const QString &rootDirectory)
+{
+    _rootDirectory.setPath(rootDirectory);
 }
 
 void BSArchiveAuto::open(const QString &archivePath)
 {
     _archive.open(archivePath);
-    qDebug() << "Opening archive: " << archivePath;
+    LOG_LIBBSARCH << "Opening archive: " << archivePath;
 }
 
 void BSArchiveAuto::create(const QString &archiveName, const bsa_archive_type_e &type)
@@ -57,7 +62,7 @@ void BSArchiveAuto::addFileFromMemory(const QString &filename, const QByteArray 
     _filesfromMemory.insert(filename, data);
 }
 
-void BSArchiveAuto::extractAll(const QString &destinationDirectory, const bool &overwriteExistingFiles)
+void BSArchiveAuto::extractAll(const QString &destinationDirectory, const bool &overwriteExistingFiles) const
 {
     for (const auto &file : _archive.listFiles())
     {
@@ -73,7 +78,7 @@ void BSArchiveAuto::extractAll(const QString &destinationDirectory, const bool &
     }
 }
 
-void BSArchiveAuto::save()
+void BSArchiveAuto::save() const
 {
     _archive.save();
 }
@@ -98,4 +103,4 @@ void BSArchiveAuto::setDDSCallback(bsa_file_dds_info_proc_t fileDDSInfoProc, voi
 {
     _archive.setDDSCallback(fileDDSInfoProc, context);
 }
-} // namespace QLibBsarch
+} // namespace Qlibbsarch

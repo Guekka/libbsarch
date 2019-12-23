@@ -4,7 +4,7 @@
 #include "BSArchiveEntries.h"
 #include <QMap>
 
-namespace Qlibbsarch {
+namespace QLibBsarch {
 /*!
  * \brief A convenience class for BSArchive and BSArchiveEntries. Its performance is worse than using these 
  * two classes separately, but it removes the need to manually handle the BSArchiveEntries.
@@ -12,13 +12,11 @@ namespace Qlibbsarch {
 class BSArchiveAuto
 {
 public:
-    BSArchiveAuto() = default;
     /*!
      * \brief Constructor
      * \param rootDirectory The root directory of the BSA. This directory is the one containing folders such as textures and meshes.
      */
     BSArchiveAuto(const QString &_rootDirectory);
-    void setRootDirectory(const QString &rootDirectory);
     /*!
      * \brief Opens an existing archive
      * \param archivePath The path of the archive
@@ -64,11 +62,11 @@ public:
      * \param destinationDirectory The directory where all files will be extracted.
      * \param overwriteExistingFiles Whether files in archive will overwrite existing loose files or not
      */
-    void extractAll(const QString &destinationDirectory, const bool &overwriteExistingFiles) const;
+    void extractAll(const QString &destinationDirectory, const bool &overwriteExistingFiles);
     /*!
      * \brief Saves the archive to the disk
      */
-    void save() const;
+    void save();
 
     void setShareData(const bool state);
     void setCompressed(const bool state);
@@ -92,4 +90,4 @@ private:
     BSArchive _archive;
     BSArchiveEntries _entries;
 };
-} // namespace Qlibbsarch
+} // namespace QLibBsarch

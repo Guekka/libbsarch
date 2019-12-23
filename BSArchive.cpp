@@ -1,6 +1,6 @@
 #include "BSArchive.h"
 
-namespace QLibBsarch {
+namespace Qlibbsarch {
 BSArchive::BSArchive()
     : _archive(bsa_create())
 {
@@ -20,7 +20,7 @@ void BSArchive::free()
     const auto &result = bsa_free(_archive);
     _openedArchive = false;
 
-    QLibBsarch::checkResult(result);
+    Qlibbsarch::checkResult(result);
 }
 
 void BSArchive::open(const QString &archivePath)
@@ -30,7 +30,7 @@ void BSArchive::open(const QString &archivePath)
     const auto &result = bsa_load_from_file(_archive, PREPARE_PATH_LIBBSARCH(archivePath));
     _openedArchive = true;
 
-    QLibBsarch::checkResult(result);
+    Qlibbsarch::checkResult(result);
 }
 
 void BSArchive::close()
@@ -52,13 +52,13 @@ void BSArchive::create(const QString &archiveName, const bsa_archive_type_e &typ
     _openedArchive = true;
 }
 
-void BSArchive::save()
+void BSArchive::save() const
 {
     LOG_LIBBSARCH << "Saving archive: " << _archive;
 
     const auto &result = bsa_save(_archive);
 
-    QLibBsarch::checkResult(result);
+    Qlibbsarch::checkResult(result);
 }
 
 void BSArchive::addFileFromDiskRoot(const QString &rootDir, const QString &filename)
@@ -71,7 +71,7 @@ void BSArchive::addFileFromDiskRoot(const QString &rootDir, const QString &filen
                                                      PREPARE_PATH_LIBBSARCH(rootDir),
                                                      PREPARE_PATH_LIBBSARCH(filename));
 
-    QLibBsarch::checkResult(result);
+    Qlibbsarch::checkResult(result);
 }
 
 void BSArchive::addFileFromDiskRoot(const QString &rootDir, const QStringList &files)
@@ -90,7 +90,7 @@ void BSArchive::addFileFromDisk(const QString &pathInArchive, const QString &fil
                                                      PREPARE_PATH_LIBBSARCH(pathInArchive),
                                                      PREPARE_PATH_LIBBSARCH(filePath));
 
-    QLibBsarch::checkResult(result);
+    Qlibbsarch::checkResult(result);
 }
 
 void BSArchive::addFileFromMemory(const QString &filename, const QByteArray &data) //NOTE UNTESTED
@@ -101,7 +101,7 @@ void BSArchive::addFileFromMemory(const QString &filename, const QByteArray &dat
     bsa_buffer_t buffer = const_cast<char *>(data.data());
     const auto &result = bsa_add_file_from_memory(_archive, PREPARE_PATH_LIBBSARCH(filename), size, buffer);
 
-    QLibBsarch::checkResult(result);
+    Qlibbsarch::checkResult(result);
 }
 void BSArchive::setCompressed(bool value)
 {
@@ -126,7 +126,7 @@ QByteArray BSArchive::extractFileDataByRecord(bsa_file_record_t record)
 {
     const auto &result = bsa_extract_file_data_by_record(_archive, record);
 
-    QLibBsarch::checkResult(result);
+    Qlibbsarch::checkResult(result);
 
     char *buffer = static_cast<char *>(result.buffer.data);
     int size = static_cast<int>(result.buffer.size);
@@ -139,7 +139,7 @@ QByteArray BSArchive::extractFileDataByFilename(const QString &filename)
 {
     const auto &result = bsa_extract_file_data_by_filename(_archive, PREPARE_PATH_LIBBSARCH(filename));
 
-    QLibBsarch::checkResult(result);
+    Qlibbsarch::checkResult(result);
 
     char *buffer = static_cast<char *>(result.buffer.data);
     int size = static_cast<int>(result.buffer.size);
@@ -148,20 +148,20 @@ QByteArray BSArchive::extractFileDataByFilename(const QString &filename)
     return byte_array;
 }
 
-void BSArchive::extract(const QString &filename, const QString &saveAs)
+void BSArchive::extract(const QString &filename, const QString &saveAs) const
 {
     qDebug() << "Extracting: " << filename << " saved as " << saveAs;
     const auto &result = bsa_extract_file(_archive, PREPARE_PATH_LIBBSARCH(filename), PREPARE_PATH_LIBBSARCH(saveAs));
 
-    QLibBsarch::checkResult(result);
+    Qlibbsarch::checkResult(result);
 }
 
-QStringList BSArchive::listFiles()
+QStringList BSArchive::listFiles() const
 {
     bsa_entry_list_t list = bsa_entry_list_create();
     const auto &result = bsa_get_resource_list(_archive, list, L"");
 
-    QLibBsarch::checkResult(result);
+    Qlibbsarch::checkResult(result);
 
     return BSArchiveEntries(list).list();
 }
@@ -182,4 +182,4 @@ void BSArchive::setDDSCallback(bsa_file_dds_info_proc_t file_dds_info_proc, void
     LOG_LIBBSARCH << "Setting DDS callback for archive: " << _archive << "\nCallback adress: " << &file_dds_info_proc;
     bsa_file_dds_info_callback_set(_archive, file_dds_info_proc, context);
 }
-} // namespace QLibBsarch
+} // namespace Qlibbsarch
