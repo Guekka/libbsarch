@@ -1331,7 +1331,7 @@ begin
       fHeaderTES4.FileFlags := fHeaderTES4.FileFlags and not FILE_MISC;
 
     // embedded names in texture only archives
-    if fHeaderTES4.FileFlags = FILE_DDS then
+    if (fHeaderTES4.FileFlags = FILE_DDS) and ((fType <> baSSE) or fCompress) then
       fHeaderTES4.Flags := fHeaderTES4.Flags or ARCHIVE_EMBEDNAME;
 
     // startupstr flag in archives with meshes
