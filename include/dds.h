@@ -41,19 +41,19 @@ typedef struct DDS_PIXELFORMAT
     uint32_t ABitMask;
 } DDS_PIXELFORMAT;
 
-#define DDS_FOURCC 0x00000004      // DDPF_FOURCC
-#define DDS_RGB 0x00000040         // DDPF_RGB
-#define DDS_RGBA 0x00000041        // DDPF_RGB | DDPF_ALPHAPIXELS
-#define DDS_LUMINANCE 0x00020000   // DDPF_LUMINANCE
-#define DDS_LUMINANCEA 0x00020001  // DDPF_LUMINANCE | DDPF_ALPHAPIXELS
+#define DDS_FOURCC 0x00000004 // DDPF_FOURCC
+#define DDS_RGB 0x00000040 // DDPF_RGB
+#define DDS_RGBA 0x00000041 // DDPF_RGB | DDPF_ALPHAPIXELS
+#define DDS_LUMINANCE 0x00020000 // DDPF_LUMINANCE
+#define DDS_LUMINANCEA 0x00020001 // DDPF_LUMINANCE | DDPF_ALPHAPIXELS
 #define DDS_ALPHAPIXELS 0x00000001 // DDPF_ALPHAPIXELS
-#define DDS_ALPHA 0x00000002       // DDPF_ALPHA
-#define DDS_PAL8 0x00000020        // DDPF_PALETTEINDEXED8
-#define DDS_PAL8A 0x00000021       // DDPF_PALETTEINDEXED8 | DDPF_ALPHAPIXELS
-#define DDS_BUMPDUDV 0x00080000    // DDPF_BUMPDUDV
+#define DDS_ALPHA 0x00000002 // DDPF_ALPHA
+#define DDS_PAL8 0x00000020 // DDPF_PALETTEINDEXED8
+#define DDS_PAL8A 0x00000021 // DDPF_PALETTEINDEXED8 | DDPF_ALPHAPIXELS
+#define DDS_BUMPDUDV 0x00080000 // DDPF_BUMPDUDV
 
 #ifndef MAKEFOURCC
-#define MAKEFOURCC(ch0, ch1, ch2, ch3) \
+#define MAKEFOURCC(ch0, ch1, ch2, ch3)                                                                   \
     ((uint32_t)((uint8_t)(ch0)) | ((uint32_t)((uint8_t)(ch1)) << 8) | ((uint32_t)((uint8_t)(ch2)) << 16) \
      | ((uint32_t)((uint8_t)(ch3)) << 24))
 #endif /* defined(MAKEFOURCC) */
@@ -94,14 +94,26 @@ extern __declspec(selectany) const DDS_PIXELFORMAT
 extern __declspec(selectany) const DDS_PIXELFORMAT
     DDSPF_YUY2 = {sizeof(DDS_PIXELFORMAT), DDS_FOURCC, MAKEFOURCC('Y', 'U', 'Y', '2'), 0, 0, 0, 0, 0};
 
-extern __declspec(selectany) const DDS_PIXELFORMAT
-    DDSPF_A8R8G8B8 = {sizeof(DDS_PIXELFORMAT), DDS_RGBA, 0, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000};
+extern __declspec(selectany) const DDS_PIXELFORMAT DDSPF_A8R8G8B8 = {sizeof(DDS_PIXELFORMAT),
+                                                                     DDS_RGBA,
+                                                                     0,
+                                                                     32,
+                                                                     0x00ff0000,
+                                                                     0x0000ff00,
+                                                                     0x000000ff,
+                                                                     0xff000000};
 
 extern __declspec(selectany) const DDS_PIXELFORMAT
     DDSPF_X8R8G8B8 = {sizeof(DDS_PIXELFORMAT), DDS_RGB, 0, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0x00000000};
 
-extern __declspec(selectany) const DDS_PIXELFORMAT
-    DDSPF_A8B8G8R8 = {sizeof(DDS_PIXELFORMAT), DDS_RGBA, 0, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000};
+extern __declspec(selectany) const DDS_PIXELFORMAT DDSPF_A8B8G8R8 = {sizeof(DDS_PIXELFORMAT),
+                                                                     DDS_RGBA,
+                                                                     0,
+                                                                     32,
+                                                                     0x000000ff,
+                                                                     0x0000ff00,
+                                                                     0x00ff0000,
+                                                                     0xff000000};
 
 extern __declspec(selectany) const DDS_PIXELFORMAT
     DDSPF_X8B8G8R8 = {sizeof(DDS_PIXELFORMAT), DDS_RGB, 0, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0x00000000};
@@ -112,11 +124,23 @@ extern __declspec(selectany) const DDS_PIXELFORMAT
 extern __declspec(selectany) const DDS_PIXELFORMAT
     DDSPF_R5G6B5 = {sizeof(DDS_PIXELFORMAT), DDS_RGB, 0, 16, 0x0000f800, 0x000007e0, 0x0000001f, 0x00000000};
 
-extern __declspec(selectany) const DDS_PIXELFORMAT
-    DDSPF_A1R5G5B5 = {sizeof(DDS_PIXELFORMAT), DDS_RGBA, 0, 16, 0x00007c00, 0x000003e0, 0x0000001f, 0x00008000};
+extern __declspec(selectany) const DDS_PIXELFORMAT DDSPF_A1R5G5B5 = {sizeof(DDS_PIXELFORMAT),
+                                                                     DDS_RGBA,
+                                                                     0,
+                                                                     16,
+                                                                     0x00007c00,
+                                                                     0x000003e0,
+                                                                     0x0000001f,
+                                                                     0x00008000};
 
-extern __declspec(selectany) const DDS_PIXELFORMAT
-    DDSPF_A4R4G4B4 = {sizeof(DDS_PIXELFORMAT), DDS_RGBA, 0, 16, 0x00000f00, 0x000000f0, 0x0000000f, 0x0000f000};
+extern __declspec(selectany) const DDS_PIXELFORMAT DDSPF_A4R4G4B4 = {sizeof(DDS_PIXELFORMAT),
+                                                                     DDS_RGBA,
+                                                                     0,
+                                                                     16,
+                                                                     0x00000f00,
+                                                                     0x000000f0,
+                                                                     0x0000000f,
+                                                                     0x0000f000};
 
 extern __declspec(selectany) const DDS_PIXELFORMAT
     DDSPF_R8G8B8 = {sizeof(DDS_PIXELFORMAT), DDS_RGB, 0, 24, 0x00ff0000, 0x0000ff00, 0x000000ff, 0x00000000};
@@ -124,8 +148,8 @@ extern __declspec(selectany) const DDS_PIXELFORMAT
 extern __declspec(selectany) const
     DDS_PIXELFORMAT DDSPF_L8 = {sizeof(DDS_PIXELFORMAT), DDS_LUMINANCE, 0, 8, 0xff, 0x00, 0x00, 0x00};
 
-extern __declspec(selectany) const
-    DDS_PIXELFORMAT DDSPF_L16 = {sizeof(DDS_PIXELFORMAT), DDS_LUMINANCE, 0, 16, 0xffff, 0x0000, 0x0000, 0x0000};
+extern __declspec(selectany) const DDS_PIXELFORMAT
+    DDSPF_L16 = {sizeof(DDS_PIXELFORMAT), DDS_LUMINANCE, 0, 16, 0xffff, 0x0000, 0x0000, 0x0000};
 
 extern __declspec(selectany) const DDS_PIXELFORMAT
     DDSPF_A8L8 = {sizeof(DDS_PIXELFORMAT), DDS_LUMINANCEA, 0, 16, 0x00ff, 0x0000, 0x0000, 0xff00};
@@ -139,11 +163,23 @@ extern __declspec(selectany) const
 extern __declspec(selectany) const DDS_PIXELFORMAT
     DDSPF_V8U8 = {sizeof(DDS_PIXELFORMAT), DDS_BUMPDUDV, 0, 16, 0x00ff, 0xff00, 0x0000, 0x0000};
 
-extern __declspec(selectany) const DDS_PIXELFORMAT
-    DDSPF_Q8W8V8U8 = {sizeof(DDS_PIXELFORMAT), DDS_BUMPDUDV, 0, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000};
+extern __declspec(selectany) const DDS_PIXELFORMAT DDSPF_Q8W8V8U8 = {sizeof(DDS_PIXELFORMAT),
+                                                                     DDS_BUMPDUDV,
+                                                                     0,
+                                                                     32,
+                                                                     0x000000ff,
+                                                                     0x0000ff00,
+                                                                     0x00ff0000,
+                                                                     0xff000000};
 
-extern __declspec(selectany) const DDS_PIXELFORMAT
-    DDSPF_V16U16 = {sizeof(DDS_PIXELFORMAT), DDS_BUMPDUDV, 0, 32, 0x0000ffff, 0xffff0000, 0x00000000, 0x00000000};
+extern __declspec(selectany) const DDS_PIXELFORMAT DDSPF_V16U16 = {sizeof(DDS_PIXELFORMAT),
+                                                                   DDS_BUMPDUDV,
+                                                                   0,
+                                                                   32,
+                                                                   0x0000ffff,
+                                                                   0xffff0000,
+                                                                   0x00000000,
+                                                                   0x00000000};
 
 // D3DFMT_A2R10G10B10/D3DFMT_A2B10G10R10 should be written using DX10 extension to avoid D3DX 10:10:10:2 reversal issue
 
@@ -151,17 +187,17 @@ extern __declspec(selectany) const DDS_PIXELFORMAT
 extern __declspec(selectany) const DDS_PIXELFORMAT
     DDSPF_DX10 = {sizeof(DDS_PIXELFORMAT), DDS_FOURCC, MAKEFOURCC('D', 'X', '1', '0'), 0, 0, 0, 0, 0};
 
-#define DDS_HEADER_FLAGS_TEXTURE 0x00001007    // DDSD_CAPS | DDSD_HEIGHT | DDSD_WIDTH | DDSD_PIXELFORMAT
-#define DDS_HEADER_FLAGS_MIPMAP 0x00020000     // DDSD_MIPMAPCOUNT
-#define DDS_HEADER_FLAGS_VOLUME 0x00800000     // DDSD_DEPTH
-#define DDS_HEADER_FLAGS_PITCH 0x00000008      // DDSD_PITCH
+#define DDS_HEADER_FLAGS_TEXTURE 0x00001007 // DDSD_CAPS | DDSD_HEIGHT | DDSD_WIDTH | DDSD_PIXELFORMAT
+#define DDS_HEADER_FLAGS_MIPMAP 0x00020000 // DDSD_MIPMAPCOUNT
+#define DDS_HEADER_FLAGS_VOLUME 0x00800000 // DDSD_DEPTH
+#define DDS_HEADER_FLAGS_PITCH 0x00000008 // DDSD_PITCH
 #define DDS_HEADER_FLAGS_LINEARSIZE 0x00080000 // DDSD_LINEARSIZE
 
 #define DDS_HEIGHT 0x00000002 // DDSD_HEIGHT
-#define DDS_WIDTH 0x00000004  // DDSD_WIDTH
+#define DDS_WIDTH 0x00000004 // DDSD_WIDTH
 
 #define DDS_SURFACE_FLAGS_TEXTURE 0x00001000 // DDSCAPS_TEXTURE
-#define DDS_SURFACE_FLAGS_MIPMAP 0x00400008  // DDSCAPS_COMPLEX | DDSCAPS_MIPMAP
+#define DDS_SURFACE_FLAGS_MIPMAP 0x00400008 // DDSCAPS_COMPLEX | DDSCAPS_MIPMAP
 #define DDS_SURFACE_FLAGS_CUBEMAP 0x00000008 // DDSCAPS_COMPLEX
 
 #define DDS_CUBEMAP_POSITIVEX 0x00000600 // DDSCAPS2_CUBEMAP | DDSCAPS2_CUBEMAP_POSITIVEX
@@ -171,7 +207,7 @@ extern __declspec(selectany) const DDS_PIXELFORMAT
 #define DDS_CUBEMAP_POSITIVEZ 0x00004200 // DDSCAPS2_CUBEMAP | DDSCAPS2_CUBEMAP_POSITIVEZ
 #define DDS_CUBEMAP_NEGATIVEZ 0x00008200 // DDSCAPS2_CUBEMAP | DDSCAPS2_CUBEMAP_NEGATIVEZ
 
-#define DDS_CUBEMAP_ALLFACES \
+#define DDS_CUBEMAP_ALLFACES                                                                       \
     (DDS_CUBEMAP_POSITIVEX | DDS_CUBEMAP_NEGATIVEX | DDS_CUBEMAP_POSITIVEY | DDS_CUBEMAP_NEGATIVEY \
      | DDS_CUBEMAP_POSITIVEZ | DDS_CUBEMAP_NEGATIVEZ)
 
@@ -200,11 +236,11 @@ enum DDS_MISC_FLAGS2
 
 enum DDS_ALPHA_MODE
 {
-    DDS_ALPHA_MODE_UNKNOWN = 0,
-    DDS_ALPHA_MODE_STRAIGHT = 1,
+    DDS_ALPHA_MODE_UNKNOWN       = 0,
+    DDS_ALPHA_MODE_STRAIGHT      = 1,
     DDS_ALPHA_MODE_PREMULTIPLIED = 2,
-    DDS_ALPHA_MODE_OPAQUE = 3,
-    DDS_ALPHA_MODE_CUSTOM = 4,
+    DDS_ALPHA_MODE_OPAQUE        = 3,
+    DDS_ALPHA_MODE_CUSTOM        = 4,
 };
 
 typedef struct DDS_HEADER
