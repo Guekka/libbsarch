@@ -124,6 +124,7 @@ extern "C"
                              const wchar_t *file_path,
                              uint32_t size,
                              bsa_buffer_t data);
+    BSARCH_DLL_API(bsa_file_record_t) bsa_get_file_record(bsa_archive_t archive, uint32_t index);
     BSARCH_DLL_API(bsa_file_record_t) bsa_find_file_record(bsa_archive_t archive, const wchar_t *file_path);
     BSARCH_DLL_API(bsa_result_message_buffer_t)
     bsa_extract_file_data_by_record(bsa_archive_t archive, bsa_file_record_t file_record);

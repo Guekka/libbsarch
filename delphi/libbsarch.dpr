@@ -212,6 +212,16 @@ begin
   end;
 end;
 
+function bsa_get_file_record(obj: Pointer; const aIndex: Cardinal): Pointer; stdcall;
+begin
+  try
+    Result := TwbBSArchive(obj).GetFileRecord(aIndex);
+  except
+    Result := nil
+  end;
+end;
+
+
 function bsa_extract_file_data_by_record(obj: Pointer; aFileRecord: Pointer): TwbBSResultMessageBuffer; stdcall;
 begin
   Result.message.code := Ord(BSA_RESULT_NONE);
@@ -411,6 +421,7 @@ exports
   bsa_file_data_free,
   bsa_extract_file_data_by_filename,
   bsa_extract_file_data_by_record,
+  bsa_get_file_record,
   bsa_find_file_record,
   bsa_add_file_from_memory,
   bsa_add_file_from_disk_root,
@@ -425,3 +436,4 @@ exports
 begin
   IsMultiThread := True;
 end.
+

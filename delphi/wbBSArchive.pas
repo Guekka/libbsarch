@@ -351,6 +351,7 @@ type
     procedure AddFileDisk(const aFilePath, aSourcePath: string);
     procedure AddFileDiskRoot(const aRootDir, aSourcePath: string);
     procedure AddFileDataCompat(const aFilePath: string; const aSize: Cardinal; const aData: PByte);
+    function GetFileRecord(aIndex: Cardinal): Pointer;
     function FindFileRecord(const aFilePath: string): Pointer;
     function ExtractFileDataCompat(aFileRecord: Pointer): TwbBSResultBuffer; overload;
     function ExtractFileDataCompat(const aFilePath: string): TwbBSResultBuffer; overload;
@@ -780,6 +781,32 @@ begin
   // force compression flag if needed
   if fCompress then
     fHeaderTES4.Flags := fHeaderTES4.Flags or ARCHIVE_COMPRESS;
+end;
+
+
+function TwbBSArchive.GetFileRecord(aIndex: Cardinal): Pointer;
+var
+  counter: Cardinal;
+  i: Cardinal;
+  j: Cardinal;
+begin
+  counter := 0;
+  case fType of
+    baTES3:
+      Result := @fFilesTES3[aIndex];
+    baTES4, baFO3, baSSE:
+      for i := Low(fFoldersTES4) to High(fFoldersTES4) do
+        for j := Low(fFoldersTES4[i].Files) to High(fFoldersTES4[i].Files) do begin
+          if counter = aIndex then begin
+            Result := @fFoldersTES4[i].Files[j];
+            Exit;
+          end;
+          inc(counter);
+        end;
+    baFO4, baFO4dds:
+      Result := @fFilesFO4[aIndex];
+  end;
+  Result := nil;
 end;
 
 function TwbBSArchive.FindFileRecordTES3(const aFilePath: string; var aFileIdx: Integer): Boolean;

@@ -87,6 +87,11 @@ bsa_add_file_from_memory(bsa_archive_t archive, const wchar_t *file_path, uint32
     RETURN_EMPTY_RESULT_MESSAGE;
 }
 
+BSARCH_DLL_API(bsa_file_record_t) bsa_get_file_record(bsa_archive_t archive, uint32_t index)
+{
+    return NULL;
+}
+
 BSARCH_DLL_API(bsa_file_record_t) bsa_find_file_record(bsa_archive_t archive, const wchar_t *file_path)
 {
     return NULL;
