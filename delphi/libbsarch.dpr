@@ -421,4 +421,7 @@ exports
   bsa_create,
   bsa_free
   ;
+
+begin
+  IsMultiThread := True;
 end.
